@@ -1,0 +1,6 @@
+#accordion1::after {
+    order: -1;
+    margin-left: 0;
+    margin-right:0.5em;
+    background-color: green;
+}

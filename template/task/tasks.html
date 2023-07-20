@@ -1,0 +1,94 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasks</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+    <link href="{% static 'style.css' %}">
+</head>
+<body>
+<nav class="navbar navbar-light bg-light justify-content-around">
+    <form class="d-flex" method="post" id="search" name="formsearch">
+        {% csrf_token %}
+        <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    <button class="btn btn-danger"><a href="/users/logout">Logout</a> </button>
+</nav>
+<div class="container">
+    <form method="post" id="form1" name="form1">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="title" class="form-label">Task nomini kiriting</label>
+            <input class="form-control" id="title" name="title">
+        </div>
+        <div class="mb-3">
+            <label for="text" class="form-label">To'liq ma'lumot</label>
+            <textarea name="text" class="form-control" id="text" rows="3"></textarea>
+            <br>
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </form>
+    <form method="post" id="form2" name="form2">
+        {% csrf_token %}
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        {% for task in tasks %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="{{ forloop.counter }}">
+                {% if task.status %}
+                <button class="accordion-button collapsed bg-success" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-{{ forloop.counter }}" aria-expanded="false"
+                        aria-controls="flush-{{ forloop.counter }}">
+                    {{ task.title }}
+                </button>
+                {% else %}
+                <button class="accordion-button collapsed bg-warning" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-{{ forloop.counter }}" aria-expanded="false"
+                        aria-controls="flush-{{ forloop.counter }}">
+                    {{ task.title }}
+                </button>
+                {% endif %}
+            </h2>
+            <div id="flush-{{ forloop.counter }}" class="accordion-collapse collapse"
+                 aria-labelledby="{{ forloop.counter }}" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                {{ task.task_text }}
+                            </div>
+                            <div class="col-md-auto">
+                                {% if task.status %}
+                                <input name="{{task.id}}" class="form-check-input"
+                                       type="checkbox" id="{{forloop.counter}}" checked>
+                                <label class="form-check-label" for="{{forloop.counter}}">
+                                    Bajarildi?
+                                </label>
+                                {% else %}
+                                <input name="{{task.id}}" class="form-check-input"
+                                       type="checkbox" id="{{forloop.counter}}">
+                                <label class="form-check-label" for="{{forloop.counter}}">
+                                    Bajarildi?
+                                </label>
+                                {% endif %}
+                            </div>
+                            <div class="col col-lg-2">
+                                    <button class="btn btn-danger" name="delete{{task.id}}" value="{{task.id}}" type="submit">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>

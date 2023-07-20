@@ -1,0 +1,20 @@
+{% extends "account/header.html" %}
+
+{% block content %}
+
+
+<!--Register-->
+<div class="container py-5">
+	<h1>Login</h1>
+	<form method="POST">
+		{% csrf_token %}
+		<label for="username">Username</label>
+        <input name="username" id="username" type="text">
+		<label for="password">Password</label>
+        <input name="password" id="password" type="password">
+		<button class="btn btn-primary" type="submit">Login</button>
+	</form>
+	<p class="text-center">If you don't have account, create one, <a href="/users/register">register</a> instead.</p>
+</div>
+
+{% endblock %}
